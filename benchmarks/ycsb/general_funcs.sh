@@ -9,7 +9,7 @@ if [ -z "$BASE" ]; then
 fi
 
 # shared lib code folder -- this is where the .so files are stored
-SHARED_LIB_FOLDER="$BASE/shared_lib"
+SHARED_LIB_FOLDER="$BASE/lib"
 
 REMOTE_MOUNT_DIR="/mnt/speedyio_benchmark_logs"
 REMOTE_MOUNT_DIR_FOR_EXTRA_REQUESTER="/mnt/speedyio_logs_requester__"  # This will be suffixed with a timestamp because we need unique directories in case multiple benchmark scripts using the extra requester nodes (to avoid all scripts trying to modify and write into the same mountpoint)

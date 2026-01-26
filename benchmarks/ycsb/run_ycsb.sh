@@ -8,15 +8,14 @@ WORKLOAD_CONFIG_FILE="./workload_config.sh"
 source ./general_funcs.sh
 source "$WORKLOAD_CONFIG_FILE"
 
+CONFIG_PATH="$BASE/lib"
+
 declare -a trials=("SATA_RA_32KB")
 # declare -a trials=("SATA_RA_4KB")
 
 DISK_DEV="/dev/sda" ## used to set RA
 
-declare -a thread_arr=("32,12")
-# declare -a thread_arr=("32,10" "32,12" "32,14")
-# declare -a thread_arr=("32,8" "32,12" "32,14" "32,16" "32,18" "32,20" "32,25" "32,30")
-# declare -a thread_arr=("16,16")
+declare -a thread_arr=("32,2")
 
 # Specify the workload types
 #declare -a workload_arr=("workloada" "workloadb" "workloadc" "workloadd" "workloade" "workloadf" "workloadc_uniform")
@@ -47,12 +46,10 @@ declare -a mem_budget_arr=("0") # Available Memory left in the system in GB
 
 # Number and time of operations to run. Whichever is earlier, the run will stop.
 # declare -a ops_arr=( "-p operationcount=$((100 * $YCSB_ROW_COUNT)) -p maxexecutiontime=600" )
-declare -a ops_arr=( "-p operationcount=$((100 * $YCSB_ROW_COUNT)) -p maxexecutiontime=3600" )
+declare -a ops_arr=( "-p operationcount=$((100 * $YCSB_ROW_COUNT)) -p maxexecutiontime=300" )
 # declare -a ops_arr=( "-p operationcount=$((100 * $YCSB_ROW_COUNT)) -p maxexecutiontime=11000" )
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------- #
-
-CONFIG_PATH="$BASE/lib"
 
 # --- Prepare run output directory ---
 RUN_TIMESTAMP=$(date +%Y-%m-%dT%H-%M-%S)
