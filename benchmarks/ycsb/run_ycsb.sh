@@ -50,11 +50,6 @@ declare -a mem_budget_arr=("0") # Available Memory left in the system in GB
 declare -a ops_arr=( "-p operationcount=$((100 * $YCSB_ROW_COUNT)) -p maxexecutiontime=3600" )
 # declare -a ops_arr=( "-p operationcount=$((100 * $YCSB_ROW_COUNT)) -p maxexecutiontime=11000" )
 
-
-# --- Global variable to enable/disable logging ---
-ENABLE_LOGGING=false  # Set to false to disable logging
-MIXED_VANILLA_AND_OTHERS=false #Enables some nodes run vanilla and others on pvt_lru
-
 # ------------------------------------------------------------------------------------------------------------------------------------------------- #
 
 CONFIG_PATH="$BASE/lib"

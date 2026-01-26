@@ -19,8 +19,11 @@ YCSB_TARBALL_PATH="$HOME/ssd/compacted/${YCSB_DB_SIZE_GB}GB.tar.gz"  # Change th
 YCSB_OUTPUT_DIR="$HOME/ssd/results/c5/load"
 
 
+# --- Global variable to enable/disable logging ---
 # Set to true to force major compaction after loading, otherwise it will wait for normal background compactions to finish
 FORCE_MAJOR_COMPACTION=false
+ENABLE_LOGGING=false  # Set to false to disable logging
+MIXED_VANILLA_AND_OTHERS=false #Enables some nodes run vanilla and others on pvt_lru
 
 
 declare -A CASSANDRA3_YAML_OVERRIDES=(
