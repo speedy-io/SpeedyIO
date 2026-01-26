@@ -1,0 +1,11 @@
+{
+  "input_files": "/users/gargsaab/ssd/ycsb/READ.hdr",
+  "max_microseconds": 240511,
+  "p9999_microseconds": 60447,
+  "p99_microseconds": 1137,
+  "p95_microseconds": 884,
+  "p999_microseconds": 17503,
+  "totalCount": 4000395,
+  "p50_microseconds": 454,
+  "min_microseconds": 126
+}
