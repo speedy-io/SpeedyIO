@@ -11,9 +11,6 @@
 
 #include <sys/syscall.h>
 
-#include "debug_utils/debug_utils.hpp"  // Include to access write_log_syscall
-#include "mock_ds.hpp"
-
 #define PAGESIZE 4096L //Page size
 #define PAGE_SHIFT 12
 #define gettid() syscall(SYS_gettid)
