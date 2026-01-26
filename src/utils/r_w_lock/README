@@ -1,0 +1,4 @@
+Multiple readers can access concurrently
+Single writer can access at once
+
+prioritises writers over readers
