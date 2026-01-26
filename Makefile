@@ -32,25 +32,44 @@ BOOK_KEEPING=-DMAINTAIN_INODE -DPER_FD_DS -DPER_THREAD_DS
 SYSTEM_INFO=-DENABLE_SYSTEM_INFO
 EVICTION_FLAGS_LRU=-DENABLE_EVICTION -DEVICTION_LRU -DENABLE_PVT_HEAP -DENABLE_POSIX_FADV_RANDOM_FOR_WHITELISTED_FILES
 
-SOURCES = \
-    interface.cpp \
-    inode.cpp \
-    prefetch_evict.cpp \
-	utils/bitmap/bitmap.c \
-	utils/filename_helper/filename_helper.cpp \
-	utils/hashtable/hashtable.c \
-	utils/heaps/binary_heap/heap.cpp \
-	utils/latency_tracking/latency_tracking.cpp \
-	utils/parse_config/get_config.cpp \
-	utils/r_w_lock/readers_writers_lock.cpp \
-    utils/shim/shim.cpp \
-	utils/start_stop/start_stop_speedyio.cpp \
-	utils/system_info/system_info.cpp \
-	utils/thpool/simple/thpool-simple.c \
-	utils/thpool/simple/fsck_lock.c \
-	utils/trigger/trigger.cpp \
-    utils/whitelist/whitelist.cpp \
-    utils/events_logger/events_logger.cpp
+# SOURCES = \
+#     interface.cpp \
+#     inode.cpp \
+#     prefetch_evict.cpp \
+# 	utils/bitmap/bitmap.c \
+# 	utils/filename_helper/filename_helper.cpp \
+# 	utils/hashtable/hashtable.c \
+# 	utils/heaps/binary_heap/heap.cpp \
+# 	utils/latency_tracking/latency_tracking.cpp \
+# 	utils/parse_config/get_config.cpp \
+# 	utils/r_w_lock/readers_writers_lock.cpp \
+#     utils/shim/shim.cpp \
+# 	utils/start_stop/start_stop_speedyio.cpp \
+# 	utils/system_info/system_info.cpp \
+# 	utils/thpool/simple/thpool-simple.c \
+# 	utils/thpool/simple/fsck_lock.c \
+# 	utils/trigger/trigger.cpp \
+#     utils/whitelist/whitelist.cpp \
+#     utils/events_logger/events_logger.cpp
+
+SRC_DIR := src
+
+VPATH := $(SRC_DIR) \
+         $(SRC_DIR)/utils/bitmap \
+         $(SRC_DIR)/utils/filename_helper \
+         $(SRC_DIR)/utils/hashtable \
+         $(SRC_DIR)/utils/heaps/binary_heap \
+         $(SRC_DIR)/utils/latency_tracking \
+         $(SRC_DIR)/utils/parse_config \
+         $(SRC_DIR)/utils/r_w_lock \
+         $(SRC_DIR)/utils/shim \
+         $(SRC_DIR)/utils/start_stop \
+         $(SRC_DIR)/utils/system_info \
+         $(SRC_DIR)/utils/thpool/simple \
+         $(SRC_DIR)/utils/trigger \
+         $(SRC_DIR)/utils/whitelist \
+         $(SRC_DIR)/utils/events_logger
+
 
 all: SPEEDYIO_RELEASE 
 
