@@ -202,7 +202,7 @@ EOF
 # EOF
 
 
-CQLSH_PYTHON=/usr/bin/python3.11 "$cqlsh_bin" "$cqlsh_host" -f "$schema_cql_file"
+CQLSH_PYTHON=/usr/bin/python3.9 "$cqlsh_bin" "$cqlsh_host" -f "$schema_cql_file"
   
 # For 1 kb value sizes, we have observed that the force-compaction as well as wait-compaction are faster when BG compactions are kept on.
 # For 32 kb value sizes, the difference between the 2 scenarios is not that much, so we will keep BG compactions enabled always while loading.
@@ -239,7 +239,7 @@ for ((i = 0; i < LOAD_YCSB_INSTANCES_PER_NODE; i++)); do
         -p operationretrylimit=10 \
         -p cassandra.readtimeoutmillis=12000000 \
         -p cassandra.retrylimit=10 \
-        -target 400000 \
+        -target 40000 \
         $YCSB_CUSTOM_FIELD_PARAMS "
   # echo "  ➤ Running command: $ycsb_load_cmd"
   eval "$ycsb_load_cmd 2>&1 | tee \"$log_file\" &"

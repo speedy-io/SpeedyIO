@@ -6,19 +6,17 @@ export CASSANDRA_HOME_DIR="$HOME/ssd/cassandra5"   # adjust if needed
 # export CASSANDRA_HOME_DIR="$HOME/ssd/cassandra"   # adjust if needed
 
 export YCSB_HOME_DIR="$HOME/ssd/ycsb"  # adjust if needed
-export YCSB_WORKLOADS_DIR="$BASE/benchmarks/ucsb/ycsb_workloads"  # Path to YCSB workloads directory
+export YCSB_WORKLOADS_DIR="$BASE/benchmarks/ycsb/ycsb_workloads"  # Path to YCSB workloads directory
 
-YCSB_DB_SIZE_GB="2700"  # DB size in GB
-# YCSB_DB_SIZE_GB="20"  # DB size in GB
+# YCSB_DB_SIZE_GB="2700"  # DB size in GB
+YCSB_DB_SIZE_GB="20"  # DB size in GB
 
 YCSB_DATA_FOLDER="$HOME/ssd/ycsb_data_c5/${YCSB_DB_SIZE_GB}GB"  # Data folder path
 # YCSB_DATA_FOLDER="$HOME/ssd/ycsb_data/${YCSB_DB_SIZE_GB}GB"  # Data folder path
 
-YCSB_TARBALL_PATH="$HOME/ssd/multi_ycsb_1kb_wait_compacted__chunk_64kb__sst_256mb_250GB/${YCSB_DB_SIZE_GB}GB.tar.gz"  # Change this to something else if you want to put the tarball somewhere else
+YCSB_TARBALL_PATH="$HOME/ssd/compacted/${YCSB_DB_SIZE_GB}GB.tar.gz"  # Change this to something else if you want to put the tarball somewhere else
 
-
-YCSB_OUTPUT_DIR="$HOME/ssd/results/c5/linux6/wkldA_uni/tw_reuse1"
-# YCSB_OUTPUT_DIR="$HOME/ssd/results/c5/load"
+YCSB_OUTPUT_DIR="$HOME/ssd/results/c5/load"
 
 
 # Set to true to force major compaction after loading, otherwise it will wait for normal background compactions to finish
@@ -244,11 +242,11 @@ YCSB_CUSTOM_FIELD_PARAMS="  "  # No need to specify anything for the default sch
 # YCSB_JAVA_OPTS=" -Dycsb.exit.on.failure=true -Xms8g -Xmx8g -XX:+UseG1GC "  # Java options for YCSB
 YCSB_JAVA_OPTS=" -Dycsb.exit.on.failure=true -Xms512m -Xmx512m -XX:+UseSerialGC -XX:MaxDirectMemorySize=512m "
 
-YCSB_LOAD_THREADS=128      # Number of threads for loading
-LOAD_YCSB_INSTANCES_PER_NODE=2  # Number of YCSB instances per node
+YCSB_LOAD_THREADS=8      # Number of threads for loading
+LOAD_YCSB_INSTANCES_PER_NODE=1  # Number of YCSB instances per node
 # RUN_YCSB_INSTANCES_PER_NODE=4  # Number of YCSB instances per node
 
-YCSB_REPLICATION_FACTOR=3  # Replication factor for the keyspace
+YCSB_REPLICATION_FACTOR=1  # Replication factor for the keyspace
 # Keep YCSB_COMPACTION_STRATEGY empty if you want to use the default compaction strategy
 YCSB_COMPACTION_STRATEGY=" AND compaction = {'class': 'LeveledCompactionStrategy', 'sstable_size_in_mb': '256'} "
 YCSB_CHUNK_LENGTH_KB="16"  # Chunk length in KB for compression. Cassandra 3.11 default is 64KB
@@ -267,11 +265,11 @@ IS_MULTINODE=true
 # ---------------------------------------------------------------------------
 # Remote Cassandra hosts (no localhost).  First entry is the seed.
 # ---------------------------------------------------------------------------
-NODE_LIST=( $(seq -f "10.10.1.%g" 2 33) )  # This will generate a list of IPs, both start and end inclusive
+NODE_LIST=( $(seq -f "10.10.1.%g" 2 3) )  # This will generate a list of IPs, both start and end inclusive
 
 # V_NODE_LIST=("10.10.1.2" "10.10.1.3" "10.10.1.4" "10.10.1.5" "10.10.1.6" "10.10.1.7")
-V_NODE_LIST=( $(seq -f "10.10.1.%g" 2 9) )
-OTHER_NODE_LIST=( $(seq -f "10.10.1.%g" 10 33) )
+# V_NODE_LIST=( $(seq -f "10.10.1.%g" 2 9) )
+# OTHER_NODE_LIST=( $(seq -f "10.10.1.%g" 10 33) )
 
 REQUESTER_NODE_IP="10.10.1.1"  # IP of the requester node (this node)
 # EXTRA_REQUESTER_NODES=("10.10.1.2")  # List of additional requester nodes if needed
