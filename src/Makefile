@@ -1,0 +1,80 @@
+CXX=g++
+CC=gcc
+
+# detect host architecture and pick CPU flags
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),aarch64)
+  # ARCH_FLAGS := -march=armv8-a           # safe default for Graviton; or use -mcpu=neoverse-v2 for Graviton4
+  ARCH_FLAGS := -mcpu=neoverse-v2          # safe default for Graviton; or use -mcpu=neoverse-v2 for Graviton4
+else
+  ARCH_FLAGS := -march=native
+endif
+
+# Add -latomic for AArch64 (if required by atomics)
+ifeq ($(ARCH),aarch64)
+  LIBS += -latomic
+endif
+
+#Check gcc/g++ version. Error otherwise
+REQUIRED_GCC_VERSION := 11
+REQUIRED_GPP_VERSION := 11
+
+LIBS=-lpthread -lrt -ldl -lm
+FLAGS=-fPIC -shared -std=c++14 -O3 $(ARCH_FLAGS)
+
+INCLUDE=-I. -I./utils
+
+BOOK_KEEPING=-DMAINTAIN_INODE -DPER_FD_DS -DPER_THREAD_DS
+SYSTEM_INFO=-DENABLE_SYSTEM_INFO
+EVICTION_FLAGS_LRU=-DENABLE_EVICTION -DEVICTION_LRU -DENABLE_PVT_HEAP -DENABLE_POSIX_FADV_RANDOM_FOR_WHITELISTED_FILES
+
+SOURCES = \
+    interface.cpp \
+    inode.cpp \
+    prefetch_evict.cpp \
+	utils/bitmap/bitmap.c \
+	utils/filename_helper/filename_helper.cpp \
+	utils/hashtable/hashtable.c \
+	utils/heaps/binary_heap/heap.cpp \
+	utils/latency_tracking/latency_tracking.cpp \
+	utils/parse_config/get_config.cpp \
+	utils/r_w_lock/readers_writers_lock.cpp \
+    utils/shim/shim.cpp \
+	utils/start_stop/start_stop_speedyio.cpp \
+	utils/system_info/system_info.cpp \
+	utils/thpool/simple/thpool-simple.c \
+	utils/thpool/simple/fsck_lock.c \
+	utils/trigger/trigger.cpp \
+    utils/whitelist/whitelist.cpp \
+    utils/events_logger/events_logger.cpp
+
+all: SPEEDYIO_RELEASE
+
+SPEEDYIO_RELEASE: $(SOURCES)
+	$(MAKE) check_gcc_version
+	$(CXX) $(INCLUDE) $(FLAGS) -o lib_speedyio_release.so $^ $(LIBS) -DGHEAP_TRIGGER -DNOSYNC_BEFORE_RANGE_EVICT -DEVICTOR_OUTSIDE_LOCK $(BOOK_KEEPING) $(SYSTEM_INFO) $(EVICTION_FLAGS_LRU) -DSET_PVT_MIN_IN_GHEAP -DENABLE_START_STOP -DENABLE_FADV_DONT_NEED -DENABLE_SEQ_ON_DONTNEED
+
+install:
+	sudo cp *.so /usr/lib
+
+clean:
+	sudo rm -f /usr/lib/lib_speedyio_*.so
+	rm ./lib_speedyio_*.so
+
+check_gcc_version:
+	@if ! command -v gcc >/dev/null 2>&1; then \
+		echo "Error: gcc not found."; exit 1; \
+	fi
+	@if ! command -v g++ >/dev/null 2>&1; then \
+		echo "Error: g++ not found."; exit 1; \
+	fi
+	@GCC_VERSION=$$(gcc -dumpversion | cut -d. -f1); \
+	if [ "$$GCC_VERSION" -lt "$(REQUIRED_GCC_VERSION)" ]; then \
+		echo "Error: GCC version must be >= $(REQUIRED_GCC_VERSION). Found: $$GCC_VERSION"; \
+		exit 1; \
+	fi
+	@GPP_VERSION=$$(g++ -dumpversion | cut -d. -f1); \
+	if [ "$$GPP_VERSION" -lt "$(REQUIRED_GPP_VERSION)" ]; then \
+		echo "Error: G++ version must be >= $(REQUIRED_GPP_VERSION). Found: $$GPP_VERSION"; \
+		exit 1; \
+	fi
