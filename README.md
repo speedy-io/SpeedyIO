@@ -171,4 +171,6 @@ For teams interested in:
 Most Cassandra performance work stops at configuration and JVM tuning.
 SpeedyIO explores the friction between OS and Cassandra that hurts performance.
 
+License: Non-Commercial Source License — free for personal and internal use. Commercial use requires a separate license.
+
 If you care about improving Cassandra’s tail behavior at runtime, lets talk.
